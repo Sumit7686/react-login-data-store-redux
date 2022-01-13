@@ -17,7 +17,7 @@ import * as Yup from "yup";
 
 import addUser from "../Actions/SignUpAction";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   link: {
@@ -31,6 +31,7 @@ const useStyles = makeStyles({
 function SignUp(props) {
   let navigate = useNavigate();
 
+  const reduxData = useSelector(state => state.userData);
   const dispatch = useDispatch();
 
   const classes = useStyles();
@@ -47,8 +48,17 @@ function SignUp(props) {
   });
 
   const storeDataInRedux = (values) => {
-    dispatch(addUser(values));
-    navigate('/sign-in');
+    var flag = true;
+    reduxData.length > 0 &&
+      reduxData.map((item) =>
+        item.userName === values.userName || item.email === values.email
+          ? (flag = false)
+          : null
+      );
+    if (flag) {
+      dispatch(addUser(values));
+      navigate("/sign-in");
+    }
   };
 
   return (
@@ -72,7 +82,6 @@ function SignUp(props) {
           }}
           validationSchema={signInvalidation}
           onSubmit={(values) => {
-            // console.log("values :::", values);
             storeDataInRedux(values);
           }}
         >

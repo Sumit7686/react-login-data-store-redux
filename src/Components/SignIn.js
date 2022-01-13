@@ -44,15 +44,14 @@ function SignIn() {
   });
 
   const checkCrediantials = (values) => {
-    console.log("selector :::", reduxData);
     if (reduxData.length > 0) {
       for (let i = 0; i < reduxData.length; i++) {
         if (reduxData[i].email === values.email) {
           if (reduxData[i].password === values.password) {
-            console.log("login.");
             navigate("/");
+            return console.log("login.");
           } else {
-            console.log("password wrong.");
+            return console.log("password wrong.");
           }
         } else {
           console.log("email wrong.");
